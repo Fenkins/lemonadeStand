@@ -33,8 +33,15 @@ class ViewController: UIViewController {
     var lemonsToMix = 0
     var iceCubesToMix = 0
     
+    var weatherArray:[[Int]] = [[-10, -9, -5, -7], [5, 8, 10, 9], [22, 25, 27, 23]]
+    var weatherToday:[Int] = [0, 0, 0, 0]
+    
+    var weatherImageView:UIImageView = UIImageView(frame: CGRectMake(20, 50, 50, 50))
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.addSubview(weatherImageView)
+        generateTodaysWeather(weatherArray)
         updateThoseLabels()
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -135,8 +142,9 @@ class ViewController: UIViewController {
     
     
     @IBAction func startTheDay(sender: AnyObject) {
+        let avgWeatherNumberToGo = avgWeatherNumber(generateTodaysWeather(weatherArray))
         
-        let customersCounter = Int(arc4random_uniform(UInt32(100)))
+        let customersCounter = Int(arc4random_uniform(UInt32(avgWeatherNumberToGo)))
         let mixtureRatio = Double(lemonsToMix) / Double(iceCubesToMix)
         
         for x in 0...customersCounter {
@@ -180,6 +188,22 @@ class ViewController: UIViewController {
         var alert = UIAlertController(title: header, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func generateTodaysWeather(data:[[Int]])->[Int] {
+        var weatherArrayNumber = Int(arc4random_uniform(UInt32(data.count)))
+        var weatherCondition = data[weatherArrayNumber]
+        return weatherCondition
+    }
+    
+    func avgWeatherNumber(data:[Int]) -> Int {
+        var summary = 0
+        for everyNumber in data {
+            summary += everyNumber
+        }
+        var avg = Double(summary) / Double(data.count)
+        var rounded:Int = Int(ceil(avg))
+        return rounded
     }
     
 }
