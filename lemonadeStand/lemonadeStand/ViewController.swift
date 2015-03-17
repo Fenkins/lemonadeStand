@@ -33,7 +33,7 @@ class ViewController: UIViewController {
     var lemonsToMix = 0
     var iceCubesToMix = 0
     
-    var weatherArray:[[Int]] = [[-10, -9, -5, -7], [5, 8, 10, 9], [22, 25, 27, 23]]
+    var weatherArray:[[Int]] = [[3, 5, 4, 2], [5, 8, 10, 9], [22, 25, 27, 23]]
     var weatherToday:[Int] = [0, 0, 0, 0]
     
     var weatherImageView:UIImageView = UIImageView(frame: CGRectMake(20, 50, 50, 50))
@@ -142,27 +142,46 @@ class ViewController: UIViewController {
     
     
     @IBAction func startTheDay(sender: AnyObject) {
-        let avgWeatherNumberToGo = avgWeatherNumber(generateTodaysWeather(weatherArray))
+        var avgWeatherNumberToGo = avgWeatherNumber(generateTodaysWeather(weatherArray))
         
-        let customersCounter = Int(arc4random_uniform(UInt32(avgWeatherNumberToGo)))
-        let mixtureRatio = Double(lemonsToMix) / Double(iceCubesToMix)
+//        if avgWeatherNumberToGo <= 0 {
+//            avgWeatherNumberToGo = Int(arc4random_uniform(UInt32(10)))
+//        }
+        var customersCounter = Int(arc4random_uniform(UInt32(avgWeatherNumberToGo)))
+        if customersCounter <= (lemonsToMix + iceCubesToMix) {
+            customersCounter = Int(arc4random_uniform(UInt32(avgWeatherNumberToGo)))
+        }
+        let mixtureRatio = Float(lemonsToMix) / Float(iceCubesToMix)
         
         for x in 0...customersCounter {
         let customersPreferences = Double(arc4random_uniform(UInt32(100)))/100
             if mixtureRatio < 1 && customersPreferences < 0.4 {
-                supply.bank += 1
-                println("Customer has been paid off")
+                if iceCubesToMix > 0 && lemonsToMix <= 0 {
+                    println("That is not even lemonade(You are asshole)")
+                }
+                else {
+                supply.bank += 2
+                    println("Customer has been paid off")}
             }
             else if mixtureRatio > 1 && customersPreferences > 0.6 {
-                supply.bank += 1
-                println("Customer has been paid off")
+                if iceCubesToMix > 0 && lemonsToMix <= 0 {
+                    println("That is not even lemonade(You are asshole)")
+                }
+                else {
+                supply.bank += 2
+                    println("Customer has been paid off")}
             }
             else if mixtureRatio == 1 && customersPreferences <= 0.6 && customersPreferences >= 0.4 {
-                supply.bank += 1
-                println("Customer has been paid off")
+                if iceCubesToMix > 0 && lemonsToMix <= 0 {
+                    println("That is not even lemonade(You are asshole)")
+                }
+                else {
+                supply.bank += 2
+                    println("Customer has been paid off")}
             }
             else {
-                println("No money for you")
+                println("Client is an asshole and pays only 1$")
+                supply.bank += 1
             }
         }
         
@@ -201,9 +220,9 @@ class ViewController: UIViewController {
             case 2:
                 weatherImageView.image = UIImage(named: "mild")
             case 3:
-                weatherImageView.image = UIImage(named: "hot")
+                weatherImageView.image = UIImage(named: "warm")
             default:
-                weatherImageView.image = UIImage(named: "cold")
+                weatherImageView.image = UIImage(named: "warm")
             }
         
         
