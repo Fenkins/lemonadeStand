@@ -193,6 +193,20 @@ class ViewController: UIViewController {
     func generateTodaysWeather(data:[[Int]])->[Int] {
         var weatherArrayNumber = Int(arc4random_uniform(UInt32(data.count)))
         var weatherCondition = data[weatherArrayNumber]
+        
+        
+            switch weatherArrayNumber {
+            case 1:
+                weatherImageView.image = UIImage(named: "cold")
+            case 2:
+                weatherImageView.image = UIImage(named: "mild")
+            case 3:
+                weatherImageView.image = UIImage(named: "hot")
+            default:
+                weatherImageView.image = UIImage(named: "cold")
+            }
+        
+        
         return weatherCondition
     }
     
@@ -205,6 +219,8 @@ class ViewController: UIViewController {
         var rounded:Int = Int(ceil(avg))
         return rounded
     }
+    
+    
     
 }
 
